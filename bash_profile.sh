@@ -57,6 +57,20 @@ export HADOOP_PROTOC_PATH=$HADOOP_PROTOC_CDH5_PATH
 export JAVA_HOME=`/usr/libexec/java_home`
 # For Hadoop, also need to put the above in .bashrc file
 
+
+# Switch between Java 6 and Java 7
+# Note: the default is Java 7 and this will only affect the current terminal window, and may not affect all things launched from it (maven is affected though)
+java6() {
+	export JAVA_HOME=/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home
+}
+java7() {
+	# Versions of Java 7 are located here: /Library/Java/JavaVirtualMachines/
+	# The following command will always point to the latest one, regardless of what JAVA_HOME is set to so we don’t have
+	# to update this when updating Java
+	export JAVA_HOME=`/usr/libexec/java_home`
+}
+
+
 # Give Maven more heap and permgen memory so it won't run out
 export MAVEN_OPTS="-Xmx1024m -XX:MaxPermSize=512m"
 
@@ -204,12 +218,3 @@ gitOrder() {
 	sort $theFile | cut -d' ' -f 2
 }
 
-
-# Switch between Java 6 and Java 7
-# Note: the default is Java 7 and this will only affect the current terminal window, and may not affect all things launched from it (maven is affected though)
-java6() {
-	export JAVA_HOME=/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home
-}
-java7() {
-	export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home
-}
