@@ -58,16 +58,16 @@ export JAVA_HOME=`/usr/libexec/java_home`
 # For Hadoop, also need to put the above in .bashrc file
 
 
-# Switch between Java 6 and Java 7
-# Note: the default is Java 7 and this will only affect the current terminal window, and may not affect all things launched from it (maven is affected though)
+# Switch between Java versions
+# /usr/libexec/java_home -v 1.X will always point to the latest 1.X version
 java6() {
-	export JAVA_HOME=/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home
+	export JAVA_HOME=`/usr/libexec/java_home -v 1.6` && `java -version`
 }
 java7() {
-	# Versions of Java 7 are located here: /Library/Java/JavaVirtualMachines/
-	# The following command will always point to the latest one, regardless of what JAVA_HOME is set to so we don’t have
-	# to update this when updating Java
-	export JAVA_HOME=`/usr/libexec/java_home`
+	export JAVA_HOME=`/usr/libexec/java_home -v 1.7` && `java -version`
+}
+java8() {
+    export JAVA_HOME=`/usr/libexec/java_home -v 1.8` && `java -version`
 }
 
 
@@ -138,7 +138,6 @@ greset() {
 	fi
 }
 
-
 # Grep for trailing whitespace
 alias grepTrailingWhitespace='grep "^+.*[[:space:]]$" -n'
 
@@ -164,9 +163,9 @@ alias jstackMavenTest='jstackMaven | grep Test | grep oozie'
 # Useful for easily getting a list of tests to run from mvn from a backport cherry-pick
 gTests() {
 	# get modified Tests
-	export modifiedTests=`git status | grep '#\W*modified' | cut -f 4 -d ' ' | grep '/Test.*\.java$' | awk -F/ '{print $(NF)}' | cut -f 1 -d '.' | tr -s '\n' ','`
+	export modifiedTests=`git status | grep '\W*modified' | cut -f 4 -d ' ' | grep '/Test.*\.java$' | awk -F/ '{print $(NF)}' | cut -f 1 -d '.' | tr -s '\n' ','`
 	# get new Tests
-	export newTests=`git status | grep '#\W*new file' | cut -f 5 -d ' ' | grep '/Test.*\.java$' | awk -F/ '{print $(NF)}' | cut -f 1 -d '.' | tr -s '\n' ','`
+	export newTests=`git status | grep '\W*new file' | cut -f 5 -d ' ' | grep '/Test.*\.java$' | awk -F/ '{print $(NF)}' | cut -f 1 -d '.' | tr -s '\n' ','`
 	# echo both lists as one list and remove the trailing comma
 	echo $modifiedTests$newTests | awk '{ print substr($0,1,length($0)-1) }'
 }
