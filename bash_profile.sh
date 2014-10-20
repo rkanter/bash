@@ -54,7 +54,7 @@ export HADOOP_PROTOC_PATH=$HADOOP_PROTOC_CDH5_PATH
 
 
 # Determine where Java is and set env var
-export JAVA_HOME=`/usr/libexec/java_home`
+export JAVA_HOME=`/usr/libexec/java_home -v 1.7`
 # For Hadoop, also need to put the above in .bashrc file
 
 
