@@ -6,6 +6,7 @@
 # Adds git auto-completion to the terminal
 # This has to go before the PS1 so that the __git_ps1 command is available
 source /usr/local/git/contrib/completion/git-completion.bash
+source /usr/local/git/contrib/completion/git-prompt.sh
 
 # Customize Prompt
 ################
