@@ -87,7 +87,10 @@ alias gcp='git cherry-pick -x'
 alias opne='open'
 
 # Import SVN and GIT functions
-source vcs_functions.sh
+# BASH_SOURCE gets you the directory of this script (usually)
+# http://stackoverflow.com/questions/192292/bash-how-best-to-include-other-scripts/12694189#12694189
+currentDir="${BASH_SOURCE%/*}"
+source $currentDir/vcs_functions.sh
 
 # Grep for trailing whitespace
 alias grepTrailingWhitespace='grep "^+.*[[:space:]]$" -n'
