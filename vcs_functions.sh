@@ -41,7 +41,7 @@ diffGitJIRAs() {
     export baseFile=$r/baseFile
     # This gets the PROJECT-XXXX values from the lines that start with it
     git log $theBase --oneline | cut -f2 -d" " | grep "$theProject" | cut -f1 -d':' | cut -f1 -d'.' > $baseFile
-    # This gets PROJECT-XXXX values from limes like this: "Merge r1607833 from Trunk: YARN-2251. Avoid negative..."
+    # This gets PROJECT-XXXX values from lines like this: "Merge r1607833 from Trunk: YARN-2251. Avoid negative..."
     git log $theBase --oneline | cut -f10 -d" " |  grep "$theProject" | cut -f1 -d':' | cut -f1 -d'.' >> $baseFile
     export sortedBaseFile=$r/sortedBaseFile
     cat $baseFile | sort | uniq > $sortedBaseFile
