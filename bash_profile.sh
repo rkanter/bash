@@ -86,58 +86,8 @@ alias gcp='git cherry-pick -x'
 # I make this typo a lot
 alias opne='open'
 
-
-# Generates a list of PROJECT-XXXX (or PROJECT_XXXX) JIRA numbers that are in the $2 branch but not in the $1 branch
-# If the second argument is not given, the default is to compare the $1 branch with the “master” branch
-# If neither arguments are given, the default is to compare the current branch with the “master” branch
-# (Oozie uses “master” instead of trunk in git now)
-diffGitJIRAs() {
-	theBranch=$1
-	if [ "$theBranch" == "" ]; then
-		theBranch=`git branch | grep \* | cut -f2 -d" "`
-	fi
-	theBase=$2
-	if [ "$theBase" == "" ]; then
-		theBase=`echo master`	# for some reason, theBase=“master” was including the quotes
-	fi
-	echo "# JIRAs numbers that are in the \"$theBase\" branch but not in the \"$theBranch\" branch:"
-	export r=`mktemp -d /tmp/diff-XXXXX`
-	export baseFile=$r/baseFile
-	# this gets the JIRA number from lines like "OOZIE-1177 HostnameFilter should…"
-	git log $theBase --oneline | cut -f2 -d" " | cut -f2 -d- | cut -f2 -d_ > $baseFile
-	# this gets the JIRA number from lines like "Merge -r 1341945:1341946 from trunk to branch. FIXES: OOZIE-851"
-	git log $theBase --oneline | cut -f10 -d" " |  grep OOZIE | cut -f2 -d- | cut -f2 -d_ >> $baseFile
-	export sortedBaseFile=$r/sortedBaseFile
-	cat $baseFile | sort | uniq > $sortedBaseFile
-	export branchFile=$r/branchFile
-	git log $theBranch --oneline | cut -f2 -d" " | cut -f2 -d- | cut -f2 -d_ > $branchFile
-	git log $theBranch --oneline | cut -f10 -d" " |  grep OOZIE | cut -f2 -d- | cut -f2 -d_ >> $branchFile
-	export sortedBranchFile=$r/sortedBranchFile
-	cat $branchFile | sort | uniq > $sortedBranchFile
-	export diffFile=$r/diffFile
-	comm -2 -3 $sortedBaseFile $sortedBranchFile > $diffFile
-	grep -Ff $diffFile $baseFile
-}
-
-# Resets and checks out the original version of a file under git
-# Useful when cherry picking and have to ignore the "conflict" in a CHANGES.txt or release-log.txt file etc
-greset() {
-	if [ "$1" == "" ]; then
-		echo "error: missing filename"
-		return -1
-	fi
-	if [ "$1" == "." ]; then
-		echo "error: filename cannot be '.'"
-		return -1
-	fi
-	if [[ "$1" != /* ]] || [[ "$1" == $PWD* ]]; then
-		git reset $1
-		git checkout -- $1
-	else
-		echo "error: filename must be in current directory ($PWD)"
-		return -1
-	fi
-}
+# Import SVN and GIT functions
+source vcs_functions.sh
 
 # Grep for trailing whitespace
 alias grepTrailingWhitespace='grep "^+.*[[:space:]]$" -n'
@@ -159,62 +109,4 @@ alias addtxt='for x in `ls`; do mv $x $x.txt; done'
 # Run jstack against the currently running maven process and filter for 'Test' and 'oozie' to get an idea of what the currently running test is
 alias jstackMaven='jstack `jps | grep surefirebooter | cut -f 1 -d " "`'
 alias jstackMavenTest='jstackMaven | grep Test | grep oozie'
-
-# Print out a maven formatted list of modified or new Test*.java files from a git commit
-# Useful for easily getting a list of tests to run from mvn from a backport cherry-pick
-gTests() {
-	# get modified Tests
-	export modifiedTests=`git status | grep '\W*modified' | cut -f 4 -d ' ' | grep '/Test.*\.java$' | awk -F/ '{print $(NF)}' | cut -f 1 -d '.' | tr -s '\n' ','`
-	# get new Tests
-	export newTests=`git status | grep '\W*new file' | cut -f 5 -d ' ' | grep '/Test.*\.java$' | awk -F/ '{print $(NF)}' | cut -f 1 -d '.' | tr -s '\n' ','`
-	# echo both lists as one list and remove the trailing comma
-	echo $modifiedTests$newTests | awk '{ print substr($0,1,length($0)-1) }'
-}
-
-# Same as gTests() but for svn
-sTests() {
-	# get modified and new Tests
-	export modifiedAndNewTests=`svn status | grep '^[M,A]' | cut -f 8 -d ' ' | grep '/Test.*\.java$' | awk -F/ '{print $(NF)}' | cut -f 1 -d '.' | tr -s '\n' ','`
-	# echo the list and remove the trailing comma
-	echo $modifiedAndNewTests | awk '{ print substr($0,1,length($0)-1) }'
-}
-
-# svn add all files marked as ?
-svnAddAll() {
-	for newFile in `svn status | grep '^?' | awk '{print $2}'`
-	do
-		svn add $newFile
-	done
-}
-
-# svn delete all files marked as !
-svnDelAll() {
-	for newFile in `svn status | grep '^!' | awk '{print $2}'`
-	do
-		svn rm $newFile
-	done
-}
-
-# svn revert all (to clean state)
-svnRevertAll() {
-	svn revert -R .
-	for newFile in `svn status | grep '^?' | awk '{print $2}'`
-	do
-		rm -r $newFile
-	done
-}
-
-
-# given a list of git hashes, sort them by commit order
-gitOrder() {
-	theFile=`mktemp /tmp/gitOrder-XXXXXXXXXXXX`
-	# For each hash, dump it into a file with its timestamp in unix format
-	for hash in $@
-	do
-		git log --pretty=format:"%ct %H" $hash^..$hash >> $theFile
-		echo "" >> $theFile
-	done
-	# sort the file (timestamp is first so it will be sorted by timestamp) and print the hashes back
-	sort $theFile | cut -d' ' -f 2
-}
 
