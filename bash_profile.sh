@@ -35,6 +35,9 @@ PS1="$B_PURPLE>> $B_YELLOW[\#] $B_CYAN\A : $B_YELLOW\W$B_WHITE\$(__git_ps1) $B_C
 ######################################
 
 
+# Add current directory name to window/tab title
+export PROMPT_COMMAND='echo -ne "\033]0;${PWD##*/}\007"'
+
 
 
 # Fix for stupid Java bug that was causing all java processes to make a dock icon and steal focus
