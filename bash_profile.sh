@@ -83,6 +83,9 @@ alias mvnHadoop='mvn clean package -Pdist -Dtar -Dmaven.javadoc.skip=true -Dskip
 # To build Hadoop (mr1)
 alias antHadoop='ant jar -Dreactor.repo=file:///dev/null'
 
+# findbugs needs to be installed ('brew install findbugs')
+export FINDBUGS_HOME=/usr/local/Cellar/findbugs/3.0.0/libexec
+
 
 alias gcp='git cherry-pick -x'
 
