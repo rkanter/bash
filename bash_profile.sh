@@ -78,6 +78,8 @@ java8() {
 # Give Maven more heap and permgen memory so it won't run out
 export MAVEN_OPTS="-Xmx1024m -XX:MaxPermSize=512m"
 
+# To build Oozie
+alias mvnOozie='mvn clean package assembly:single -DskipTests'
 # To build Hadoop (mr2)
 alias mvnHadoop='mvn clean package -Pdist -Dtar -Dmaven.javadoc.skip=true -DskipTests'
 # To build Hadoop (mr1)
@@ -86,8 +88,6 @@ alias antHadoop='ant jar -Dreactor.repo=file:///dev/null'
 # findbugs needs to be installed ('brew install findbugs')
 export FINDBUGS_HOME=/usr/local/Cellar/findbugs/3.0.0/libexec
 
-
-alias gcp='git cherry-pick -x'
 
 # I make this typo a lot
 alias opne='open'

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+
+alias gcp='git cherry-pick -x'
+
 # diffGitJIRAs <PROJECT> [branch] [base-branch]
 # This checks for PROJECT-XXXX JIRAs that are in the 'base-branch' but not in the 'branch' branch.  It relies on the git commit
 # messages following a certain format so it's not perfect.
