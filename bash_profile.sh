@@ -119,3 +119,6 @@ alias addtxt='for x in `ls`; do mv $x $x.txt; done'
 alias jstackMaven='jstack `jps | grep surefirebooter | cut -f 1 -d " "`'
 alias jstackMavenTest='jstackMaven | grep Test | grep oozie'
 
+# Pretty print JSON
+alias pjson='python -m json.tool'
+
