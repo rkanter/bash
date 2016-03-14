@@ -139,7 +139,7 @@ mvnflakey() {
     do
         mvn clean test -Dtest=${testName} $@
         if [ $? -ne 0 ]; then
-            echo "Failure!"
+            echo "Failure after ${n} runs"
             return -1
         fi
     done
