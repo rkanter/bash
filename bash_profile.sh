@@ -122,3 +122,25 @@ alias jstackMavenTest='jstackMaven | grep Test | grep oozie'
 # Pretty print JSON
 alias pjson='python -m json.tool'
 
+
+# Use this to test for flakey unit tests
+mvnflakey() {
+    numTimes=$1
+    testName=$2
+
+    if [[ -z "$numTimes" || -z "$testName" ]]; then
+      echo "usage: mvnflakey <numTimes> <testName> [additional args for mvn]"
+      return -1
+    fi
+
+    shift
+    shift
+    for ((n=0; n<${numTimes}; n++))
+    do
+        mvn clean test -Dtest=${testName} $@
+        if [ $? -ne 0 ]; then
+            echo "Failure!"
+            return -1
+        fi
+    done
+}
