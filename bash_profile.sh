@@ -137,7 +137,7 @@ mvnflakey() {
     shift
     for ((n=0; n<${numTimes}; n++))
     do
-        mvn clean test -Dtest=${testName} $@
+        mvn test -Dtest=${testName} $@
         if [ $? -ne 0 ]; then
             echo "Failure after ${n} runs"
             return -1
