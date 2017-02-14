@@ -81,7 +81,7 @@ export MAVEN_OPTS="-Xmx1024m -XX:MaxPermSize=512m"
 # To build Oozie
 alias mvnOozie='mvn clean package assembly:single -DskipTests'
 # To build Hadoop (mr2)
-alias mvnHadoop='mvn clean package -Pdist -Dtar -Dmaven.javadoc.skip=true -DskipTests'
+alias mvnHadoop='mvn clean package -Pdist -Dtar -Dmaven.javadoc.skip=true -DskipTests -DskipShade'
 # To build Hadoop (mr1)
 alias antHadoop='ant jar -Dreactor.repo=file:///dev/null'
 
