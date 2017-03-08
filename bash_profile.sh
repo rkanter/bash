@@ -1,3 +1,4 @@
+#!/bin/bash
 ############################################
 # source this file in your ~/.bash_profile #
 ############################################
@@ -10,25 +11,44 @@ source /usr/local/git/contrib/completion/git-prompt.sh
 
 # Customize Prompt
 ################
+# shellcheck disable=SC2034
 BLACK="\[\e[0;30m\]"
+# shellcheck disable=SC2034
 BLUE="\[\e[0;34m\]"
+# shellcheck disable=SC2034
 GREEN="\[\e[0;32m\]"
+# shellcheck disable=SC2034
 CYAN="\[\e[0;36m\]"
+# shellcheck disable=SC2034
 RED="\[\e[0;31m\]"
+# shellcheck disable=SC2034
 PURPLE="\[\e[0;35m\]"
+# shellcheck disable=SC2034
 BROWN="\[\e[0;33m\]"
+# shellcheck disable=SC2034
 GREY="\[\e[0;37m\]"
+# shellcheck disable=SC2034
 YELLOW="\[\e[0;33m\]"
+# shellcheck disable=SC2034
 WHITE="\[\e[0;37m\]"
 
+# shellcheck disable=SC2034
 B_BLUE="\[\e[1;34m\]"
+# shellcheck disable=SC2034
 B_GREEN="\[\e[1;32m\]"
+# shellcheck disable=SC2034
 B_CYAN="\[\e[1;36m\]"
+# shellcheck disable=SC2034
 B_RED="\[\e[1;31m\]"
+# shellcheck disable=SC2034
 B_PURPLE="\[\e[1;35m\]"
+# shellcheck disable=SC2034
 B_BROWN="\[\e[1;33m\]"
+# shellcheck disable=SC2034
 B_GREY="\[\e[1;37m\]"
+# shellcheck disable=SC2034
 B_YELLOW="\[\e[1;33m\]"
+# shellcheck disable=SC2034
 B_WHITE="\[\e[1;37m\]"
 
 PS1="$B_PURPLE>> $B_YELLOW[\#] $B_CYAN\A : $B_YELLOW\W$B_WHITE\$(__git_ps1) $B_CYAN:: $GREEN"
@@ -58,20 +78,23 @@ export HADOOP_PROTOC_PATH=$HADOOP_PROTOC_CDH5_PATH
 
 
 # Determine where Java is and set env var
-export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
+export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
 # For Hadoop, also need to put the above in .bashrc file
 
 
 # Switch between Java versions
 # /usr/libexec/java_home -v 1.X will always point to the latest 1.X version
 java6() {
-	export JAVA_HOME=`/usr/libexec/java_home -v 1.6` && `java -version`
+	export JAVA_HOME=$(/usr/libexec/java_home -v 1.6)
+	java -version
 }
 java7() {
-	export JAVA_HOME=`/usr/libexec/java_home -v 1.7` && `java -version`
+  export JAVA_HOME=$(/usr/libexec/java_home -v 1.7)
+	java -version
 }
 java8() {
-    export JAVA_HOME=`/usr/libexec/java_home -v 1.8` && `java -version`
+  export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
+	java -version
 }
 
 
@@ -96,7 +119,7 @@ alias opne='open'
 # BASH_SOURCE gets you the directory of this script (usually)
 # http://stackoverflow.com/questions/192292/bash-how-best-to-include-other-scripts/12694189#12694189
 currentDir="${BASH_SOURCE%/*}"
-source $currentDir/vcs_functions.sh
+source "$currentDir"/vcs_functions.sh
 
 # Grep for trailing whitespace
 alias grepTrailingWhitespace='grep "^+.*[[:space:]]$" -n'
@@ -112,11 +135,11 @@ alias tooLongHadoop='sed -n "/^+.\{81\}/p"'
 # untar a file
 alias untar='tar -zxvf'
 
-# add txt extension to add files in current dir
-alias addtxt='for x in `ls`; do mv $x $x.txt; done'
+# add txt extension to all files in current dir
+alias addtxt='for x in $(ls); do mv $x $x.txt; done'
 
 # Run jstack against the currently running maven process and filter for 'Test' and 'oozie' to get an idea of what the currently running test is
-alias jstackMaven='jstack `jps | grep surefirebooter | cut -f 1 -d " "`'
+alias jstackMaven='jstack $(jps | grep surefirebooter | cut -f 1 -d " ")'
 alias jstackMavenTest='jstackMaven | grep Test | grep oozie'
 
 # Pretty print JSON
@@ -135,9 +158,9 @@ mvnflakey() {
 
     shift
     shift
-    for ((n=0; n<${numTimes}; n++))
+    for ((n=0; n<numTimes; n++))
     do
-        mvn test -Dtest=${testName} $@
+        mvn test -Dtest="${testName}" "$@"
         if [ $? -ne 0 ]; then
             echo "Failure after ${n} runs"
             return -1
