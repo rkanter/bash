@@ -158,12 +158,12 @@ mvnflakey() {
 
     shift
     shift
-    for ((n=0; n<numTimes; n++))
+    for ((n=1; n<=numTimes; n++))
     do
-		echo "Starting run ${n+1}"
+		echo "Starting run ${n}"
         mvn test -Dtest="${testName}" "$@"
         if [ $? -ne 0 ]; then
-            echo "Failure after ${n} runs"
+            echo "Failure after $((n-1)) runs"
             return -1
 		else
 			echo "Run ${n} was a success"
