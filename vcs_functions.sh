@@ -84,15 +84,15 @@ sTests() {
 	echo "$modifiedAndNewTests" | awk '{ print substr($0,1,length($0)-1) }'
 }
 
-# Same as gTests() but for finding the tests modified between two branches
+# Same as gTests() but for finding the tests modified in the current working diff
 gdTests() {
-    theBase=$1
-    if [ "$theBase" == "" ]; then
-        # assume master
-        theBase="master"
+    theBranch=$1
+    if [ "$theBranch" == "" ]; then
+        # assume current branch
+        # shellcheck disable=SC2063
+        theBranch=$(git branch | grep \* | cut -f2 -d" ")
     fi
-    theBranch=$2
-	git diff "$theBase" "$theBranch" | grep +++ | grep Test | awk -F/ '{print $(NF)}' | cut -f 1 -d '.' | tr -s '\n' ',' | awk '{ print substr($0,1,length($0)-1) }'
+	git diff "$theBranch" | grep +++ | grep Test | awk -F/ '{print $(NF)}' | cut -f 1 -d '.' | tr -s '\n' ',' | awk '{ print substr($0,1,length($0)-1) }'
 }
 
 # given a list of git hashes, sort them by commit order
