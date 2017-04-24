@@ -85,7 +85,7 @@ gcTests() {
 		echo "error: missing branch"
 		return -1
     fi
-	git diff --name-status "${theBase}..${theBranch}" | grep '^[M,A]' | grep Test | awk -F/ '{print $(NF)}' | cut -f 1 -d '.' | tr -s '\n' ',' | awk '{ print substr($0,1,length($0)-1) }'
+	git diff --name-status "${theBase}^..${theBranch}" | grep '^[M,A]' | grep Test | awk -F/ '{print $(NF)}' | cut -f 1 -d '.' | tr -s '\n' ',' | awk '{ print substr($0,1,length($0)-1) }'
 }
 
 # given a list of git hashes, sort them by commit order
