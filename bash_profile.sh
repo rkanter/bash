@@ -170,3 +170,31 @@ mvnflakey() {
 		fi
     done
 }
+
+
+# Use this to upload to multiple GCE servers
+# For example: uploadToGCE rkanter-z 3 file.txt /tmp/
+uploadToGCE() {
+	hostPrefix=$1
+	numHosts=$2
+	sourcePath=$3
+	destinationPath=$4
+
+    if [[ -z "$hostPrefix" || -z "$numHosts" || -z "$sourcePath" || -z "$destinationPath" ]]; then
+      echo "usage: uploadToGCE <hostPrefix> <numHosts> <sourcePath> <destinationPath>"
+      return -1
+    fi
+
+    for ((n=1; n<=numHosts; n++))
+    do
+		target="$hostPrefix-$n.gce.cloudera.com:$destinationPath"
+		echo "::: Uploading $sourcePath to $target"
+		scp "$sourcePath" "root@$target"
+        if [ $? -ne 0 ]; then
+			echo "::: Failure"
+            return -1
+		else
+			echo "::: Success"
+		fi
+    done
+}
