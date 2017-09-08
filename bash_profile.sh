@@ -138,9 +138,12 @@ alias untar='tar -zxvf'
 # add txt extension to all files in current dir
 alias addtxt='for x in $(ls); do mv $x $x.txt; done'
 
-# Run jstack against the currently running maven process and filter for 'Test' and 'oozie' to get an idea of what the currently running test is
+# Run jstack against a currently running unit test (via surefire from maven), also versions for filtering on Oozie or Hadoop
+# Useful for getting a stack trace on what test is currently running and where it is
 alias jstackMaven='jstack $(jps | grep surefirebooter | cut -f 1 -d " ")'
-alias jstackMavenTest='jstackMaven | grep Test | grep oozie'
+alias jstackMavenTest='jstackMaven | grep Test'
+alias jstackMavenTestOozie='jstackMavenTest | grep oozie'
+alias jstackMavenTestHadoop='jstackMavenTest | grep hadoop'
 
 # Pretty print JSON
 alias pjson='python -m json.tool'
