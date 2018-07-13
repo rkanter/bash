@@ -145,3 +145,15 @@ greset() {
 		return -1
 	fi
 }
+
+# This fixes some occasional problem with git + ssh agent
+# https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/#adding-your-ssh-key-to-the-ssh-agent
+# If you ever get an error like this:
+#    ERROR: Your account is suspended. Please check with your installation administrator.
+#    fatal: Could not read from remote repository.
+#    Please make sure you have the correct access rights
+#    and the repository exists.
+gsshfix() {
+	eval "$(ssh-agent -s)"
+}
+
