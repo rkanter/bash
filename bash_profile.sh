@@ -92,14 +92,17 @@ java6() {
 	java -version
 }
 java7() {
-  export JAVA_HOME=$(/usr/libexec/java_home -v 1.7)
+    export JAVA_HOME=$(/usr/libexec/java_home -v 1.7)
 	java -version
 }
 java8() {
-  export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
-	java -version
+    export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
+    java -version
 }
-
+java11() {
+    export JAVA_HOME=$(/usr/libexec/java_home -v 11)
+    java -version
+}
 
 # Give Maven more heap and permgen memory so it won't run out
 export MAVEN_OPTS="-Xmx1024m -XX:MaxPermSize=512m"
