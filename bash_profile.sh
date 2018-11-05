@@ -6,8 +6,11 @@
 
 # Adds git auto-completion to the terminal
 # This has to go before the PS1 so that the __git_ps1 command is available
-source /usr/local/git/contrib/completion/git-completion.bash
-source /usr/local/git/contrib/completion/git-prompt.sh
+# Make sure to run these two installs for them to work:
+# 1. brew install git bash-completion
+# 2. brew install bash-git-prompt
+source /usr/local/etc/bash_completion.d/git-completion.bash
+source /usr/local/etc/bash_completion.d/git-prompt.sh
 
 # Customize Prompt
 ################
