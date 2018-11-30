@@ -107,6 +107,15 @@ java11() {
 # Give Maven more heap and permgen memory so it won't run out
 export MAVEN_OPTS="-Xmx1024m -XX:MaxPermSize=512m"
 
+
+# Python is a mess and it seems like each program requires a different version of Python.
+# The simplest way to handle this is to use pyenv by following the instructions here:
+# http://akbaribrahim.com/managing-multiple-python-versions-with-pyenv/
+# Make sure to install pyenv first (brew install pyenv)
+# That website lists a bunch of useful pyenv commands
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+
+
 # To build Oozie
 alias mvnOozie='mvn clean package assembly:single -DskipTests'
 # To build Hadoop (mr2)
