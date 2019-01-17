@@ -105,7 +105,7 @@ java11() {
 }
 
 # Give Maven more heap and permgen memory so it won't run out
-export MAVEN_OPTS="-Xmx1024m -XX:MaxPermSize=512m"
+export MAVEN_OPTS="-Xmx2048m -XX:MaxPermSize=1024m"
 
 
 # Python is a mess and it seems like each program requires a different version of Python.
