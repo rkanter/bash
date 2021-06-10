@@ -86,22 +86,21 @@ export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
 
 
 # Switch between Java versions
-# /usr/libexec/java_home -v 1.X will always point to the latest 1.X version
-java6() {
-	export JAVA_HOME=$(/usr/libexec/java_home -v 1.6)
-	java -version
-}
-java7() {
-    export JAVA_HOME=$(/usr/libexec/java_home -v 1.7)
-	java -version
-}
+# /usr/libexec/java_home -v X will always point to the latest X version
 java8() {
-    export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
+    export JAVA_HOME=$(/usr/libexec/java_home -v 1.8 -F)
     java -version
 }
 java11() {
-    export JAVA_HOME=$(/usr/libexec/java_home -v 11)
+    export JAVA_HOME=$(/usr/libexec/java_home -v 11 -F)
     java -version
+}
+java14() {
+    export JAVA_HOME=$(/usr/libexec/java_home -v 14 -F)
+    java -version
+}
+javaList() {
+    /usr/libexec/java_home -V
 }
 
 # Give Maven more heap and permgen memory so it won't run out
@@ -162,6 +161,10 @@ alias jstackMavenTestHadoop='jstackMavenTest | grep hadoop'
 
 # Pretty print JSON
 alias pjson='python -m json.tool'
+
+# Increase history size/length
+HISTSIZE=20000
+HISTFILESIZE=20000
 
 
 # Use this to test for flakey unit tests
